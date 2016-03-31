@@ -111,13 +111,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\SnakesAndLadders\SurveyGroupProject\Driver.cpp" />
-    <ClCompile Include="..\..\..\SnakesAndLadders\SurveyGroupProject\Entity.cpp" />
-    <ClCompile Include="..\..\..\SnakesAndLadders\SurveyGroupProject\EntityEnum.cpp" />
-    <ClCompile Include="..\..\..\SnakesAndLadders\SurveyGroupProject\Snake.cpp" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Snake.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\SnakesAndLadders\SurveyGroupProject\Snake.hpp" />
+    <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityEnum.cpp" />
+    <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
