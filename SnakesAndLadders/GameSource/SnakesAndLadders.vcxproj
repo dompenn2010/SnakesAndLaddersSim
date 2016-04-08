@@ -111,10 +111,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Driver.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityEnum.cpp" />
