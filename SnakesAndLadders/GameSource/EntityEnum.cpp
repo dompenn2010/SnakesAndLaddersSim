@@ -1,15 +1,5 @@
-/*
+enum entityEnum{
 
-#include "EntityEnum.h"
-
-
-
-EntityEnum::EntityEnum()
-{
-}
-
-
-EntityEnum::~EntityEnum()
-{
-}
-*/
+	Snake,
+	Ladder
+};

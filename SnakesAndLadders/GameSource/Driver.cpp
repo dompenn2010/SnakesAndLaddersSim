@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 using namespace std;
 ////////////////////////////////////////////
 class  Player{
@@ -19,27 +20,40 @@ public:
 		return location;
 	}
 
-	void nextTurn(){
-		turn ++;
+	void nextTurn(int roll){
+		turn++;
+		location += roll;
 	}
 
 	int getTurn(){
 		return turn;
 	}
 
+	//void playerRoll() {
+	//	location += roll();
+	//}
+
 private:
 	int location;
 	int turn;
 };
 
+enum entityEnum {
+
+	Snake,
+	Ladder
+};
 
 ////////////////////////////////////////////
 class Entity {
 
 public:	
-//	Entity(int m)
-//		: magnitude(m)
-//	{}
+	Entity()
+	{}
+
+	Entity(int m, entityEnum e)
+		: magnitude(m), entityType(e)
+	{}
 
 	void setMagnitude(int m){
 		magnitude = m;
@@ -49,10 +63,17 @@ public:
 		return magnitude;
 	}
 
+	void setType(entityEnum e) {
+		entityType = e;
+	}
+
+	entityEnum getType() {
+		return entityType;
+	}
+
 private:
 	int magnitude;
-
-//	enum entityType;
+	entityEnum entityType;
 };
 
 ///////////////////////////////////////////
@@ -73,6 +94,7 @@ public:
 	{}
 };*/
 /////////////////////////////////////////////
+
 class Board{
 
 public:
@@ -80,14 +102,10 @@ public:
 		: width(w), height(h) 
 	{}
 
-
 	int getSize() {
 		return boardSize;
 	}
 
-		
-
-	
 
 private:
 	int width;
@@ -103,45 +121,58 @@ int main() {
 	void constructCreatures(int magnitude);
 	void constructBoard(int w, int h);
 	int roll();
+	bool battle(Player p, Entity e, int boardSize);
+	void playerStats(Player player);
+
 	bool playing = true;	
 
-
-	//constructCreatures(69);
-
-	initBoard(20,20);
-
-	Player playerReady1;
-	cout << "Player is at location: " << playerReady1.getLocation() << " and we are on turn: " << playerReady1.getTurn() << "\n";
+	//initBoard(20,20);
 	
-	playerReady1.nextTurn();
-	playerReady1.nextTurn();
-	playerReady1.setLocation(69);
+	Player player;
+
 	
-	cout << "Player is at location: " << playerReady1.getLocation() << " and we are on turn: " << playerReady1.getTurn() << "\n";
-	
+	Entity gameBoard[25];
+
+	for (int i = 0; i < 5; i++) {
+		gameBoard[i].setMagnitude(1);
+		gameBoard[i].setType(Ladder);
+	}
+
+
+	// Game Loop
+	while (playing) {
+
+		playerStats(player);
+		
+		player.nextTurn(roll());
+
+		if (gameBoard[player.getLocation()].getType() != NULL) {
+
+			if (battle(player, gameBoard[player.getLocation()], (sizeof(gameBoard) / sizeof(*gameBoard)))) {
+				cout << "You Won! Congratulations!\n\n";
+				playing = false; 
+				break;
+			}
+		}
+
+	}
+	system("pause");
+
+
+
+
 /*
-	Entity entityArr[5];
-
-	for (int i = 0; i < 5; i++){
-		entityArr[i].setMagnitude(roll());
-		cout << "Entity " << i << "'s magnitude is " << entityArr[i].getMagnitude() << "\n";		
-	}		
-*/	
-	while (playing){
-	
-	
-	}	
-
-
-
-
-
-
-
+		
+*/
 	return 0;
 }
 
+void playerStats(Player player) {
 
+	cout << "\nStats!\n" << "Players location: " << player.getLocation() << "\n";
+	cout << "Current Turn: " << player.getTurn() << "\n\n\n";
+
+}
 
 void constructBoard(int w, int h) {
 	Board gameBoard(w, h);
@@ -188,19 +219,28 @@ int roll(){
 
 	roll = rand() % 6 + 1;
 	
-
+	cout << "You rolled a " << roll << "!\n";
 	return roll;
 }
 
-bool battle(Player p, Entity e, Board b){
-	
+// In the event that a player reaches an entity, adjust location based on entity type
+bool battle(Player p, Entity e, int boardSize){
+	int initialLoc = p.getLocation();
 	bool didJaWin = false; 
 
 	// Players location = current location + magnitude of entity
-	p.setLocation(p.getLocation() + e.getMagnitude());
+	if (e.getType() == Snake) {
+		p.setLocation(p.getLocation() - e.getMagnitude());
+		cout << "You hit a snake at location: " << initialLoc << " with a magnitude of " << e.getMagnitude() << "\n";
+	}
+	else {
+		p.setLocation(p.getLocation() + e.getMagnitude());
+		cout << "You a found a ladder at location: " << initialLoc << " with a magnitude of " << e.getMagnitude() << "\n";
+
+	}
 	
 	// If player reaches end of board, win
-	if (p.getLocation() >=  b.getSize()){
+	if (p.getLocation() >=  boardSize){
 		didJaWin = true; 
 		return didJaWin;
 	}
