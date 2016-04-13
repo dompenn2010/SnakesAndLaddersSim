@@ -41,7 +41,8 @@ private:
 enum entityEnum {
 
 	Snake,
-	Ladder
+	Ladder,
+	Vacant
 };
 
 ////////////////////////////////////////////
@@ -116,55 +117,109 @@ private:
 	
 };
 ///////////////////////////////////////////
+void initBoard(int w, int h  /*, Entity[] e*/);
+void constructCreatures(int magnitude);
+void constructBoard(int w, int h);
+int roll();
+bool battle(Player &p, Entity e, int boardSize);
+void playerStats(Player player);
+bool processTurn(Entity currentEntity, int boardSize, entityEnum entType);
+
+Player player;
+
 int main() {
-	void initBoard(int w, int h  /*, Entity[] e*/);
-	void constructCreatures(int magnitude);
-	void constructBoard(int w, int h);
-	int roll();
-	bool battle(Player p, Entity e, int boardSize);
-	void playerStats(Player player);
+	
 
 	bool playing = true;	
 
 	//initBoard(20,20);
 	
-	Player player;
+	
 
 	
-	Entity gameBoard[25];
+	//Entity *gameBoard = new Entity[2]; 
+	Entity gameBoard[10];
 
-	for (int i = 0; i < 5; i++) {
+	gameBoard[0].setMagnitude(1);
+	gameBoard[0].setType(Snake);
+
+	gameBoard[1].setMagnitude(2);
+	gameBoard[1].setType(Snake);
+
+	gameBoard[2].setMagnitude(3);
+	gameBoard[2].setType(Snake);
+
+	gameBoard[3].setMagnitude(4);
+	gameBoard[3].setType(Ladder);
+
+	gameBoard[4].setMagnitude(5);
+	gameBoard[4].setType(Snake);
+
+	gameBoard[5].setMagnitude(6);
+	gameBoard[5].setType(Snake);
+
+	gameBoard[6].setMagnitude(7);
+	gameBoard[6].setType(Ladder);
+
+	gameBoard[7].setMagnitude(8);
+	gameBoard[7].setType(Snake);
+
+	gameBoard[8].setMagnitude(9);
+	gameBoard[8].setType(Snake);
+
+	gameBoard[9].setMagnitude(10);
+	gameBoard[9].setType(Snake);
+	
+	/*
+	for (int i = 0; i < 25; i++) {
 		gameBoard[i].setMagnitude(1);
-		gameBoard[i].setType(Ladder);
-	}
+		gameBoard[i].setType(Vacant);
 
+		 if (i % 3 == 0) {
+			gameBoard[i].setType(Ladder);
+		}
+		else if (i % 2 == 0) {
+			gameBoard[i].setType(Snake);
+		}
+		
+	}
+	*/
+
+	
+	int boardSize = (sizeof(gameBoard) / sizeof(*gameBoard));
 
 	// Game Loop
 	while (playing) {
+		Entity currentEntity = gameBoard[player.getLocation()];
 
 		playerStats(player);
 		
 		player.nextTurn(roll());
 
-		if (gameBoard[player.getLocation()].getType() != NULL) {
+		
 
-			if (battle(player, gameBoard[player.getLocation()], (sizeof(gameBoard) / sizeof(*gameBoard)))) {
-				cout << "You Won! Congratulations!\n\n";
-				playing = false; 
-				break;
-			}
+		// processTurn = true,
+		if (processTurn(currentEntity, boardSize, currentEntity.getType())) {
+			cout << "You Won! Congratulations!\n\n";
+			playing = false;
+			break;
 		}
-
+		
 	}
 	system("pause");
 
-
-
-
-/*
-		
-*/
 	return 0;
+}
+
+bool processTurn(Entity currentEntity, int boardSize, entityEnum entType) {
+	//if (entType != NULL) {
+
+		if (battle(player, currentEntity, boardSize)) {
+			return true;
+		}
+	//}
+	
+	return false;
 }
 
 void playerStats(Player player) {
@@ -224,31 +279,37 @@ int roll(){
 }
 
 // In the event that a player reaches an entity, adjust location based on entity type
-bool battle(Player p, Entity e, int boardSize){
+bool battle(Player &p, Entity e, int boardSize){
 	int initialLoc = p.getLocation();
+	int entityMag = e.getMagnitude();
+	entityEnum entityType = e.getType();
 	bool didJaWin = false; 
 
-	// Players location = current location + magnitude of entity
-	if (e.getType() == Snake) {
-		p.setLocation(p.getLocation() - e.getMagnitude());
-		cout << "You hit a snake at location: " << initialLoc << " with a magnitude of " << e.getMagnitude() << "\n";
-	}
-	else {
-		p.setLocation(p.getLocation() + e.getMagnitude());
-		cout << "You a found a ladder at location: " << initialLoc << " with a magnitude of " << e.getMagnitude() << "\n";
 
-	}
-	
 	// If player reaches end of board, win
-	if (p.getLocation() >=  boardSize){
-		didJaWin = true; 
+	if (p.getLocation() >= boardSize) {
+		didJaWin = true;
 		return didJaWin;
 	}
-		
+
 	// If snake sends player below location 0, fix it
-	if (p.getLocation() < 0 ){
+	if (p.getLocation() < 0) {
 		p.setLocation(0);
 	}
+	
+	// Players location = current location + magnitude of entity
+	if (entityType == Snake) {
+		cout << "You hit a snake at location: " << initialLoc << " with a magnitude of " << entityMag << "\n";
+		p.setLocation(p.getLocation() - entityMag);
+	}
+	if (entityType == Ladder) {
+		cout << "You a found a ladder at location: " << initialLoc << " with a magnitude of " << entityMag << "\n";
+		p.setLocation(p.getLocation() + entityMag);
+
+	}if (entityType == Vacant) {
+		cout << "NOTHINGS HERE, FREDDIE!!!";
+	}
+
 
 	return didJaWin;
 }	
