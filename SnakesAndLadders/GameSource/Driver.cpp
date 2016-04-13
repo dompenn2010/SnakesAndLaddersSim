@@ -9,7 +9,7 @@ class  Player{
 
 public:	
 	Player()
-		: turn(0), location(0)
+		: turn(1), location(0)
 	{}
 
 	void setLocation(int l){
@@ -170,10 +170,9 @@ int main() {
 	gameBoard[9].setMagnitude(10);
 	gameBoard[9].setType(Snake);
 	
-	/*
-	for (int i = 0; i < 25; i++) {
-		gameBoard[i].setMagnitude(1);
-		gameBoard[i].setType(Vacant);
+/*	for (int i = 0; i < 20 ; i++) {
+		gameBoard[i].setMagnitude(4);
+		gameBoard[i].setType(Snake);
 
 		 if (i % 3 == 0) {
 			gameBoard[i].setType(Ladder);
@@ -183,8 +182,7 @@ int main() {
 		}
 		
 	}
-	*/
-
+*/
 	
 	int boardSize = (sizeof(gameBoard) / sizeof(*gameBoard));
 
@@ -200,13 +198,13 @@ int main() {
 
 		// processTurn = true,
 		if (processTurn(currentEntity, boardSize, currentEntity.getType())) {
-			cout << "You Won! Congratulations!\n\n";
+			cout << "You Won in " << player.getTurn() << " turns!! Congratulations!\n\n";
 			playing = false;
 			break;
 		}
 		
 	}
-	system("pause");
+	//system("pause");
 
 	return 0;
 }
@@ -285,17 +283,13 @@ bool battle(Player &p, Entity e, int boardSize){
 	entityEnum entityType = e.getType();
 	bool didJaWin = false; 
 
-
+	// Fix this... Calling this twice is stupid.	
 	// If player reaches end of board, win
 	if (p.getLocation() >= boardSize) {
 		didJaWin = true;
 		return didJaWin;
 	}
 
-	// If snake sends player below location 0, fix it
-	if (p.getLocation() < 0) {
-		p.setLocation(0);
-	}
 	
 	// Players location = current location + magnitude of entity
 	if (entityType == Snake) {
@@ -308,6 +302,19 @@ bool battle(Player &p, Entity e, int boardSize){
 
 	}if (entityType == Vacant) {
 		cout << "NOTHINGS HERE, FREDDIE!!!";
+	}
+
+
+	// If snake sends player below location 0, fix it
+	if (p.getLocation() < 0) {
+		p.setLocation(0);
+	}
+
+
+	// If player reaches end of board, win
+	if (p.getLocation() >= boardSize) {
+		didJaWin = true;
+		return didJaWin;
 	}
 
 

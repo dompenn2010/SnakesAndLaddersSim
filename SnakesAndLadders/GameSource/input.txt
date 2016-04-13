@@ -1,0 +1,10 @@
+20 
+5 Snake  3
+7 Ladder 4
+8 Snake 2
+10 Snake 4
+15 Ladder 4
+16 Snake 4
+18 Ladder 1
+19 Snake 8
+
