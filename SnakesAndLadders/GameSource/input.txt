@@ -1,5 +1,6 @@
-20 
-5 Snake  3
+10  // times to run
+50  // size of board
+5 Snake 3       // location what magnitude
 7 Ladder 4
 8 Snake 2
 10 Snake 4
@@ -8,3 +9,6 @@
 18 Ladder 1
 19 Snake 8
 
+5 3
+
+5 Snake 3

@@ -130,37 +130,39 @@ Player player;
 int main() {
 	
 
-	bool playing = true;	
+	int gamesPlayed = 0;
+	int totalTurns = 0;
 
+	int gamesToPlay = 10;
 	//initBoard(20,20);
 	
 	
 
 	
 	//Entity *gameBoard = new Entity[2]; 
-	Entity gameBoard[10];
+	Entity gameBoard[50];
 
-	gameBoard[0].setMagnitude(1);
-	gameBoard[0].setType(Snake);
-
-	gameBoard[1].setMagnitude(2);
-	gameBoard[1].setType(Snake);
-
-	gameBoard[2].setMagnitude(3);
-	gameBoard[2].setType(Snake);
-
-	gameBoard[3].setMagnitude(4);
-	gameBoard[3].setType(Ladder);
-
-	gameBoard[4].setMagnitude(5);
-	gameBoard[4].setType(Snake);
-
-	gameBoard[5].setMagnitude(6);
-	gameBoard[5].setType(Snake);
-
-	gameBoard[6].setMagnitude(7);
+	gameBoard[6].setMagnitude(8);
 	gameBoard[6].setType(Ladder);
 
+	gameBoard[13].setMagnitude(6);
+	gameBoard[13].setType(Snake);
+
+	gameBoard[17].setMagnitude(8);
+	gameBoard[17].setType(Ladder);
+
+	gameBoard[21].setMagnitude(2);
+	gameBoard[21].setType(Snake);
+
+	gameBoard[29].setMagnitude(4);
+	gameBoard[29].setType(Ladder);
+
+	gameBoard[35].setMagnitude(8);
+	gameBoard[35].setType(Snake);
+
+	gameBoard[40].setMagnitude(5);
+	gameBoard[40].setType(Ladder);
+/*
 	gameBoard[7].setMagnitude(8);
 	gameBoard[7].setType(Snake);
 
@@ -169,7 +171,7 @@ int main() {
 
 	gameBoard[9].setMagnitude(10);
 	gameBoard[9].setType(Snake);
-	
+*/	
 /*	for (int i = 0; i < 20 ; i++) {
 		gameBoard[i].setMagnitude(4);
 		gameBoard[i].setType(Snake);
@@ -186,26 +188,34 @@ int main() {
 	
 	int boardSize = (sizeof(gameBoard) / sizeof(*gameBoard));
 
-	// Game Loop
-	while (playing) {
-		Entity currentEntity = gameBoard[player.getLocation()];
+	for (int i = 0; i < gamesToPlay; i++){
 
-		playerStats(player);
+		bool playing = true;			
+		gamesPlayed ++;
+
+		// Game Loop
+		while (playing) {
+			Entity currentEntity = gameBoard[player.getLocation()];
+
+			playerStats(player);
 		
-		player.nextTurn(roll());
+			player.nextTurn(roll());
 
 		
 
-		// processTurn = true,
-		if (processTurn(currentEntity, boardSize, currentEntity.getType())) {
-			cout << "You Won in " << player.getTurn() << " turns!! Congratulations!\n\n";
-			playing = false;
-			break;
+			// processTurn = true,
+			if (processTurn(currentEntity, boardSize, currentEntity.getType())) {
+				cout << "You Won in " << player.getTurn() << " turns!! Congratulations!\n\n";
+				playing = false;
+				break;
+			}
+			
 		}
-		
-	}
+	totalTurns += player.getTurn();
 	//system("pause");
+	}
 
+	cout << "Games played: " << gamesPlayed << "\nAverage turns per game: " << (totalTurns/gamesPlayed) << "\n";
 	return 0;
 }
 
