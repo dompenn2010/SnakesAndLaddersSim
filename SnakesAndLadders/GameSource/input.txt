@@ -1,12 +1,12 @@
 10
-50
-5 Snake 2
-9 Ladder 4
-15 Ladder 1
-19 Snake 5
-25 Snake 2
-28 Ladder 6
-32 Ladder 4
-37 Snake 2
-42 Ladder 6
-49 Snake 8
+50 
+ 5 Snake 2
+ 9 Ladder 4 
+ 15 Ladder 1
+ 19 Snake 5
+ 25 Snake 2
+ 28 Ladder 6
+ 32 Ladder 4
+ 37 Snake 2
+ 42 Ladder 6
+ 49 Snake 8

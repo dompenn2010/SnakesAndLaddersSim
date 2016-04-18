@@ -122,40 +122,84 @@ private:
 };
 */
 ///////////////////////////////////////////
-bool readInput(int &boardSize, int &gamesToPlay) {
+bool readInput(int &boardSize, int &gamesToPlay, Entity gameBoard[]) {
 
 	string line;
 	ifstream myfile("input.txt");
 	if (myfile.is_open())
 	{
+		int inlineCount = 0;
+		int linecount = 0 ;
+		int loc = 0;
+		int mag;
+		string type;
 
-		int linecount = 0;
-		while (getline(myfile, line))
+		while (getline(myfile, line, ' '))
 		{
 			linecount++;
 			istringstream iss(line);
-			int first_on_line;
-			Entity second_on_line;
-			int third_on_line;
 
 			// First line = number of games to play
 			if (linecount == 1) {
 				gamesToPlay = stoi(line);
-
-			
+			//	cout << line << "\n";
+				linecount ++;
 			}
 			
 			// Second = boardSize
-			if (linecount == 2) {
+			else if (linecount == 2) {
 				boardSize = stoi(line);
-			}
-			else {
-
-
-
-
+				Entity *gameBoard = new Entity[boardSize];
+			//	cout << "second" << line << "\n";
 
 			}
+			 
+			else{
+				if (iss >> line){	
+				
+					
+
+					switch (inlineCount){
+						case 0 : { 
+								loc = stoi(line);
+								inlineCount++;
+								break;
+							}
+						case 1 : {
+								type = line;
+								inlineCount++;
+								break;
+							}
+						default: {	
+								mag = stoi(line);
+								gameBoard[loc].setMagnitude(mag);
+	
+								if (type.compare("Snake")){
+									gameBoard[loc].setType(Snake);
+								}else{
+									gameBoard[loc].setType(Ladder);
+								}
+								cout << "loc: " << loc << " " << "type " << gameBoard[loc].getType() << " " << "mag: " << gameBoard[loc].getMagnitude() << "\n";								
+								inlineCount = 0;
+								break;
+							}
+					}		
+	
+
+
+
+				}
+		
+
+				/*
+				cout << "!!!!!!!!!" << (iss >> first_on_line);
+				gameBoard[first_on_line].setMagnitude(third_on_line);
+				gameBoard[first_on_line].setType(Ladder);
+
+				cout << "magnitude is: " << gameBoard[6].getMagnitude();
+				*/
+			}
+
 
 
 
@@ -177,7 +221,7 @@ int roll();
 bool battle(Player &p, Entity e, int boardSize);
 void playerStats(Player player);
 bool processTurn(Entity currentEntity, int boardSize, entityEnum entType);
-bool readInput();
+bool readInput(int &boardSize, int &gamesToPlay/*, Entity &gameBoard[]*/); 
 
 Player player;
 
@@ -189,15 +233,18 @@ int main() {
 	int gamesToPlay;
 	int boardSize;
 
-	readInput(boardSize, gamesToPlay);
+	Entity gameBoard [] = {};
+
+	//Entity gameBoard [] = 
+
+	readInput(boardSize, gamesToPlay, gameBoard);
 	system("pause");
 	
 	
 
-	
-	//Entity *gameBoard = new Entity[2]; 
-	Entity gameBoard[50];
-
+	//Entity *gameBoard = new Entity[]; 
+	//Entity gameBoard[];
+/*
 	gameBoard[6].setMagnitude(8);
 	gameBoard[6].setType(Ladder);
 
@@ -219,7 +266,7 @@ int main() {
 	gameBoard[40].setMagnitude(5);
 	gameBoard[40].setType(Ladder);
 
-	
+*/	
 	//int boardSize = (sizeof(gameBoard) / sizeof(*gameBoard));
 
 	for (int i = 0; i < gamesToPlay; i++){
