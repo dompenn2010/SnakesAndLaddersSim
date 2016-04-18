@@ -1,9 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+using namespace std; // Shouldn't do this...
 
 
-using namespace std;
 ////////////////////////////////////////////
 class  Player{
 
@@ -94,8 +98,8 @@ public:
 		: magnitude(m) 
 	{}
 };*/
-/////////////////////////////////////////////
-
+///////////////////////////////////////////
+/*
 class Board{
 
 public:
@@ -116,25 +120,77 @@ private:
 	int boardSize = width*height;
 	
 };
+*/
 ///////////////////////////////////////////
+bool readInput(int &boardSize, int &gamesToPlay) {
+
+	string line;
+	ifstream myfile("input.txt");
+	if (myfile.is_open())
+	{
+
+		int linecount = 0;
+		while (getline(myfile, line))
+		{
+			linecount++;
+			istringstream iss(line);
+			int first_on_line;
+			Entity second_on_line;
+			int third_on_line;
+
+			// First line = number of games to play
+			if (linecount == 1) {
+				gamesToPlay = stoi(line);
+
+			
+			}
+			
+			// Second = boardSize
+			if (linecount == 2) {
+				boardSize = stoi(line);
+			}
+			else {
+
+
+
+
+
+			}
+
+
+
+
+		}
+		myfile.close();
+		return true;
+	}
+
+	else cout << "Unable to open file";
+	return false;
+}
+//////////////////////////////////////////
+
 void initBoard(int w, int h  /*, Entity[] e*/);
 void constructCreatures(int magnitude);
-void constructBoard(int w, int h);
+//void constructBoard(int w, int h);
 int roll();
 bool battle(Player &p, Entity e, int boardSize);
 void playerStats(Player player);
 bool processTurn(Entity currentEntity, int boardSize, entityEnum entType);
+bool readInput();
 
 Player player;
 
+
 int main() {
 	
-
 	int gamesPlayed = 0;
 	int totalTurns = 0;
+	int gamesToPlay;
+	int boardSize;
 
-	int gamesToPlay = 10;
-	//initBoard(20,20);
+	readInput(boardSize, gamesToPlay);
+	system("pause");
 	
 	
 
@@ -162,31 +218,9 @@ int main() {
 
 	gameBoard[40].setMagnitude(5);
 	gameBoard[40].setType(Ladder);
-/*
-	gameBoard[7].setMagnitude(8);
-	gameBoard[7].setType(Snake);
 
-	gameBoard[8].setMagnitude(9);
-	gameBoard[8].setType(Snake);
-
-	gameBoard[9].setMagnitude(10);
-	gameBoard[9].setType(Snake);
-*/	
-/*	for (int i = 0; i < 20 ; i++) {
-		gameBoard[i].setMagnitude(4);
-		gameBoard[i].setType(Snake);
-
-		 if (i % 3 == 0) {
-			gameBoard[i].setType(Ladder);
-		}
-		else if (i % 2 == 0) {
-			gameBoard[i].setType(Snake);
-		}
-		
-	}
-*/
 	
-	int boardSize = (sizeof(gameBoard) / sizeof(*gameBoard));
+	//int boardSize = (sizeof(gameBoard) / sizeof(*gameBoard));
 
 	for (int i = 0; i < gamesToPlay; i++){
 
@@ -206,16 +240,20 @@ int main() {
 			// processTurn = true,
 			if (processTurn(currentEntity, boardSize, currentEntity.getType())) {
 				cout << "You Won in " << player.getTurn() << " turns!! Congratulations!\n\n";
+				
+
+
 				playing = false;
 				break;
 			}
 			
 		}
 	totalTurns += player.getTurn();
-	//system("pause");
 	}
 
-	cout << "Games played: " << gamesPlayed << "\nAverage turns per game: " << (totalTurns/gamesPlayed) << "\n";
+	cout << "Total Turns: " << totalTurns << "\n";
+	cout << "Games played: " << gamesPlayed << "\nAverage turns per game: " << ((double)totalTurns/(double)gamesPlayed) << "\n";
+	system("pause");
 	return 0;
 }
 
@@ -237,6 +275,7 @@ void playerStats(Player player) {
 
 }
 
+/*
 void constructBoard(int w, int h) {
 	Board gameBoard(w, h);
 	cout << "The board is: " << gameBoard.getSize() << "\n";
@@ -246,7 +285,7 @@ void constructBoard(int w, int h) {
 //	cin >> input; 
 	
 }
-
+*/
 
 void constructCreatures(int magnitude) {
 /*
@@ -268,13 +307,14 @@ void constructCreatures(int magnitude) {
 
 
 /*Use this to initialize the game - should only take in the board size and location of entities */
-void initBoard(int w, int h  /*, Entity[] e*/) {
+/*
+void initBoard(int w, int h ) {
 
 	constructBoard(w, h);
 	//constructCreatures(e);
 
 }
-
+*/
 int roll(){
 
 	int roll;
