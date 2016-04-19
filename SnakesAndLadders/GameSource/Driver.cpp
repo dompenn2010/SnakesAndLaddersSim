@@ -141,20 +141,38 @@ bool readInput(int &boardSize, int &gamesToPlay, Entity gameBoard[]) {
 
 			// First line = number of games to play
 			if (linecount == 1) {
+			
+				// So the "line" is counting 10 and 50 as one line - thats whats fucking me up
+
+				if (inlineCount == 0){
 				gamesToPlay = stoi(line);
-			//	cout << line << "\n";
+				cout << "One: " << line << "\n";
+				
 				linecount ++;
+				inlineCount++;
+			//	break;
+				}else if (inlineCount == 2){
+					
+							
+				boardSize = stoi(line);
+				Entity *gameBoard = new Entity[boardSize];
+			
+				cout << "Two: " << line << "\n";
+				inlineCount = 0;
+		
+				}
+					
 			}
 			
 			// Second = boardSize
-			else if (linecount == 2) {
+			/* else if(linecount == 2) {
 				boardSize = stoi(line);
 				Entity *gameBoard = new Entity[boardSize];
-			//	cout << "second" << line << "\n";
-
-			}
-			 
-			else{
+			
+				cout << "Two: " << line << "\n";
+		
+				
+			}*/else{
 				if (iss >> line){	
 				
 					
@@ -176,7 +194,7 @@ bool readInput(int &boardSize, int &gamesToPlay, Entity gameBoard[]) {
 	
 								if (type.compare("Snake")){
 									gameBoard[loc].setType(Snake);
-								}else{
+								}else if(type.compare("Ladder")){
 									gameBoard[loc].setType(Ladder);
 								}
 								cout << "loc: " << loc << " " << "type " << gameBoard[loc].getType() << " " << "mag: " << gameBoard[loc].getMagnitude() << "\n";								
@@ -282,6 +300,9 @@ int main() {
 		
 			player.nextTurn(roll());
 
+
+
+			cout << "OH MY GOD!!!!!" << boardSize;
 		
 
 			// processTurn = true,
@@ -379,6 +400,7 @@ bool battle(Player &p, Entity e, int boardSize){
 	int entityMag = e.getMagnitude();
 	entityEnum entityType = e.getType();
 	bool didJaWin = false; 
+	cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << "\n";
 
 	// Fix this... Calling this twice is stupid.	
 	// If player reaches end of board, win
@@ -387,7 +409,7 @@ bool battle(Player &p, Entity e, int boardSize){
 		return didJaWin;
 	}
 
-	
+	cout << "Made it." << boardSize << "\n"; 
 	// Players location = current location + magnitude of entity
 	if (entityType == Snake) {
 		cout << "You hit a snake at location: " << initialLoc << " with a magnitude of " << entityMag << "\n";
